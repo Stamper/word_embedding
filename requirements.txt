@@ -5,3 +5,4 @@ Flask-Script==2.0.6
 Flask-SQLAlchemy==2.4.1
 pyemd==0.5.1
 gensim==3.8.3
+redis==3.5.2

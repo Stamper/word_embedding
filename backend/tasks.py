@@ -14,12 +14,13 @@ def calculate_wm_distance(sentence_id):
     if task:
         return
 
-    model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
     new_task = Task(sentence_id=sentence_id)
     db.session.add(new_task)
     db.session.flush()
+
+    model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
     target_sentence = sentence.value
-    sentences = Sentence.query.filter_by(id != sentence_id).all()
+    sentences = Sentence.query.filter(Sentence.id != sentence_id).all()
     for s in sentences:
         distance = model.wmdistance(target_sentence, s.value)
         new_result = Result(task_id=new_task.id, sentence_id=s.id, value=distance)
