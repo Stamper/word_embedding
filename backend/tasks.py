@@ -16,7 +16,7 @@ def calculate_wm_distance(sentence_id):
 
     new_task = Task(sentence_id=sentence_id)
     db.session.add(new_task)
-    db.session.flush()
+    db.session.commit()
 
     model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
     target_sentence = sentence.value

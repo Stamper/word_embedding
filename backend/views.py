@@ -12,7 +12,7 @@ from .tasks import calculate_wm_distance
 def text_endpoint():
     if request.method == 'GET':
         page = request.args.get('page', type=int, default=1)
-        texts = Text.query.paginate(page, per_page=20)
+        texts = Text.query.paginate(page, per_page=10)
 
         return {
             'status': 'ok',
@@ -49,7 +49,7 @@ def text_endpoint():
             Task.query.delete()
             Result.query.delete()
             db.session.commit()
-            return {'status': 'ok'}
+            return {'status': 'ok', 'id': new_text.id}
 
         except DatabaseError:
             return {'status': 'error'}
@@ -59,17 +59,13 @@ def text_endpoint():
 def get_text(text_id):
     text = Text.query.get_or_404(text_id)
 
-    page = request.args.get('page', type=int, default=1)
-    sentences = text.sentences.paginate(page, per_page=20)
-
     return {
         'status': 'ok',
-        'count': text.sentences.count(),
         'data': [
             {
                 'id': s.id,
-                'value': s.value[:200].strip()
-            } for s in sentences.items
+                'value': s.value
+            } for s in text.sentences
         ]
     }
 
@@ -93,9 +89,10 @@ def sentence_endpoint(sentence_id):
             'status': 'ok',
             'data': [
                 {
+                    'id': r.id,
                     'sentence_id': r.sentence_id,
                     'text_id': r.sentence.text_id,
-                    'value': r.sentence.value[:200].strip(),
+                    'value': r.sentence.value,
                 } for r in sentence.task.results.order_by(Result.value).limit(100)
             ]
         }
