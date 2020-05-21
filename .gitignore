@@ -1,0 +1,8 @@
+__pycache__
+env/
+.idea/
+.git/
+db.sqlite3
+config.py
+GoogleNews-vectors-negative300.bin
+node_modules/
