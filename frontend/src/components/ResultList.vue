@@ -7,6 +7,7 @@
         <div v-else>
             <p v-for="item in sentences" :key="item.id">
                 {{ item.value }} (<a :href="`/text/${item.text_id}`">text #{{ item.text_id }}</a>)
+                <span>{{item.distance}}</span>
             </p>
         </div>
     </div>

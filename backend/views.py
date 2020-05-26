@@ -93,6 +93,7 @@ def sentence_endpoint(sentence_id):
                     'sentence_id': r.sentence_id,
                     'text_id': r.sentence.text_id,
                     'value': r.sentence.value,
+                    'distance': r.value
                 } for r in sentence.task.results.order_by(Result.value).limit(100)
             ]
         }
