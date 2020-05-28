@@ -3,6 +3,8 @@ from gensim.models import KeyedVectors
 from . import celery, db
 from .models import Sentence, Task, Result
 
+model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
+
 
 @celery.task
 def calculate_wm_distance(sentence_id):
@@ -18,7 +20,6 @@ def calculate_wm_distance(sentence_id):
     db.session.add(new_task)
     db.session.commit()
 
-    model = KeyedVectors.load_word2vec_format('./GoogleNews-vectors-negative300.bin', binary=True)
     target_sentence = sentence.value
     sentences = Sentence.query.filter(Sentence.id != sentence_id).all()
     for s in sentences:
